@@ -20,7 +20,7 @@ const Page = () => {
       console.log('error: ', error);
       router.push("/sign-in");
     }
-  }, [data, error, router, origin]);
+  }, [data, error, router, origin]); 
 
   return (
     <div className='w-full mt-24 flex justify-center'>

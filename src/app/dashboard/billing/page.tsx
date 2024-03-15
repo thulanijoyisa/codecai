@@ -7,4 +7,4 @@ const Page = async () => {
     return <BillingForm subscriptionPlan={subscriptionPlan} /> 
 }
 
-export default Page
+export default Page  
