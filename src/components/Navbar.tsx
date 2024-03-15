@@ -25,31 +25,6 @@ const Navbar = async () => {
              
                 <>
                   <Link
-                    href='/pricing'
-                    className={buttonVariants({
-                      variant: 'ghost',
-                      size: 'sm',
-                    })}>
-                    Pricing
-                  </Link>
-                  <LoginLink
-                    className={buttonVariants({
-                      variant: 'ghost',
-                      size: 'sm',
-                    })}>
-                    Sign in
-                  </LoginLink>
-                  <RegisterLink
-                    className={buttonVariants({
-                      size: 'sm',
-                    })}>
-                    Get started{' '}
-                    <ArrowRight className='ml-1.5 h-5 w-5' />
-                  </RegisterLink>
-                </>
-             
-                <>
-                  <Link
                     href='/dashboard'
                     className={buttonVariants({
                       variant: 'ghost',
@@ -74,6 +49,31 @@ const Navbar = async () => {
                     Quizes Dashboard
                   </Link>
 
+                </>
+                  
+                <>
+                  <Link
+                    href='/pricing'
+                    className={buttonVariants({
+                      variant: 'ghost',
+                      size: 'sm',
+                    })}>
+                    Pricing
+                  </Link>
+                  <LoginLink
+                    className={buttonVariants({
+                      variant: 'ghost',
+                      size: 'sm',
+                    })}>
+                    Sign in
+                  </LoginLink>
+                  <RegisterLink
+                    className={buttonVariants({
+                      size: 'sm',
+                    })}>
+                    Get started{' '}
+                    <ArrowRight className='ml-1.5 h-5 w-5' />
+                  </RegisterLink>
                 </>
               
             </div>
