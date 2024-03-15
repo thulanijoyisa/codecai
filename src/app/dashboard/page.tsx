@@ -3,6 +3,10 @@ import { db } from "@/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from 'next/navigation'
 
+export const metadata = {
+  title: "PDF Dashboard | My Files",
+  //description: "Quiz yourself on anything!",
+};
 
 const Page = async () => {
     const {getUser} = getKindeServerSession()

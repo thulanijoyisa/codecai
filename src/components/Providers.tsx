@@ -21,7 +21,8 @@ const Providers = ({children} : PropsWithChildren) => {
            <QueryClientProvider client={queryClient}>
             {children}
             </QueryClientProvider> 
-        </trpc.Provider>)
+        </trpc.Provider>
+    )
 }
 
 export default Providers

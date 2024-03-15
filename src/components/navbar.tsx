@@ -25,7 +25,40 @@ const Navbar = () => {
           </Link>
 
           <div className='hidden items-center space-x-4 sm:flex'>
+              <>
+                <Link
+                  href='/dashboard'
+                  className={buttonVariants({
+                    variant: 'ghost',
+                    size: 'sm',
+                  })}>
+                 PDF Chat
+                </Link>
+              </>
             
+              <>
+                <Link
+                  href='/gallery'
+                  className={buttonVariants({
+                    variant: 'ghost',
+                    size: 'sm',
+                  })}>
+                  Courses
+                </Link>
+              </>
+
+              <>
+                <Link
+                  href='/quiz'
+                  className={buttonVariants({
+                    variant: 'ghost',
+                    size: 'sm',
+                  })}>
+                  Quizes
+                </Link>
+              </>
+
+                          
               <>
                 <Link
                   href='/pricing'
@@ -49,17 +82,6 @@ const Navbar = () => {
                   Get started{' '}
                   <ArrowRight className='ml-1.5 h-5 w-5' />
                 </RegisterLink>
-              </>
-            
-              <>
-                <Link
-                  href='/dashboard'
-                  className={buttonVariants({
-                    variant: 'ghost',
-                    size: 'sm',
-                  })}>
-                  Dashboard
-                </Link>
               </>
             
           </div>

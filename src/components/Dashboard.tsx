@@ -8,6 +8,8 @@ import Link from "next/link"
 import { format } from 'date-fns'
 import { Button } from "./ui/button"
 import { useState } from "react"
+import { useToast } from "./ui/use-toast"
+
 
 const Dashboard = () => {
 
@@ -15,6 +17,7 @@ const [currentlyDeletingFile, setCurrentlyDeletingFile] =
          useState<string | null>(null)
     
 const utils = trpc.useContext()
+const { toast } = useToast();
 
 const {data: files, isLoading} = trpc.getUserFiles.useQuery()
 
@@ -22,6 +25,10 @@ const { mutate: deleteFile } =
         trpc.deleteFile.useMutation({
         onSuccess: () => {
             utils.getUserFiles.invalidate()
+            toast({
+              title: "Success",
+              description: "File successfully deleted",
+            });
         },
         onMutate({ id }) {
             setCurrentlyDeletingFile(id)
@@ -42,8 +49,8 @@ const { mutate: deleteFile } =
      </div>
          {/* display all user files */}
          {files && files?.length !== 0 ? (
-        <ul className='mt-8 grid grid-cols-1 gap-6 divide-y divide-zinc-200 md:grid-cols-2 lg:grid-cols-3'>
-          {files
+            <ul className='mt-8 grid grid-cols-1 gap-6 divide-y divide-zinc-200 md:grid-cols-2 lg:grid-cols-3'>
+           {files
             .sort(
               (a, b) =>
                 new Date(b.createdAt).getTime() -
@@ -98,17 +105,17 @@ const { mutate: deleteFile } =
                 </div>
               </li>
             ))}
-        </ul>
-      ) : isLoading ? (
-        <Skeleton height={100} className='my-2' count={3} />
-      ) : (
-        <div className='mt-16 flex flex-col items-center gap-2'>
-          <Ghost className='h-8 w-8 text-zinc-800' />
-          <h3 className='font-semibold text-xl'>
+           </ul>
+           ) : isLoading ? (
+            <Skeleton height={100} className='my-2' count={3} />
+           ) : (
+           <div className='mt-16 flex flex-col items-center gap-2'>
+           <Ghost className='h-8 w-8 text-zinc-800' />
+           <h3 className='font-semibold text-xl'>
             Pretty empty around here
-          </h3>
-          <p>Let&apos;s upload your first PDF.</p>
-        </div>
+           </h3>
+           <p>Let&apos;s upload your first PDF.</p>
+           </div>
       )}
     </main>
     )

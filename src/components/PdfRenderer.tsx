@@ -77,7 +77,7 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
                )
                setValue('page', String(currPage - 1))
              }}
-              variant='ghost' aria-lebel = 'previous page'> 
+              variant='ghost' aria-label = 'previous page'> 
            <ChevronDown className='h-4 w-4' />
             </Button>  
 
@@ -109,7 +109,7 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
                 )
                 setValue('page', String(currPage + 1))
               }}
-            variant='ghost' aria-lebel = 'next page'> 
+            variant='ghost' aria-label = 'next page'> 
            <ChevronUp className='h-4 w-4' />
             </Button> 
           </div>

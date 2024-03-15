@@ -11,9 +11,9 @@ import { useUploadThing } from "@/lib/uploadthing"
 import { useToast } from "./ui/use-toast"
 import { useRouter } from "next/navigation"
 import { trpc } from "@/app/_trpc/client"
-
+ 
 const UploadDropzone = () => {
-  const router = useRouter()
+  const router = useRouter() 
 
   const [isUploading, setIsUploading] = useState<boolean>(false)
 
@@ -49,7 +49,7 @@ const UploadDropzone = () => {
     return interval
   }
 
-  return <Dropzone multiple ={false} onDrop={async (acceptedFile) => { 
+  return ( <Dropzone multiple ={false} onDrop={async (acceptedFile) => { 
     setIsUploading(true) 
     const progressInterval = startSimulatedProgress()
 
@@ -113,13 +113,7 @@ const UploadDropzone = () => {
                 </div>
               ) : null}
 
-                <input
-                {...getInputProps()}
-                type='file'
-                id='dropzone-file'
-                className='hidden'
-                />
-              {isUploading ? (
+            {isUploading ? (
                 <div className='w-full mt-4 max-w-xs mx-auto'>
                   <Progress
                   indicatorColor={
@@ -139,14 +133,19 @@ const UploadDropzone = () => {
                 </div>
               ) : null}
 
+                <input
+                {...getInputProps()}
+                type='file'
+                id='dropzone-file'
+                className='hidden'
+                />
+
            </label>
-
           </div>
-
         </div>
       )}
   </Dropzone>
-}
+)}
 
 const UploadButton = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -154,7 +153,7 @@ const UploadButton = () => {
     return (
         <Dialog 
         open={isOpen}
-        onOpenChange={(v: boolean | ((prevState: boolean) => boolean)) => {
+        onOpenChange={(v) => {
           if (!v) {
             setIsOpen(v)
           }
