@@ -3,7 +3,7 @@
 import { getUserSubscriptionPlan } from '@/lib/stripe'
 import { useToast } from './ui/use-toast'
 import { trpc } from '@/app/_trpc/client'
-import MaxWidthWrapper from './MaxWidthWrapper'
+
 import {
   Card,
   CardDescription,
@@ -14,6 +14,7 @@ import {
 import { Button } from './ui/button'
 import { Loader2 } from 'lucide-react'
 import { format } from 'date-fns'
+import MaxWidthWrapper from './MaxWidthWrapper'
 
 interface BillingFormProps {
   subscriptionPlan: Awaited<
