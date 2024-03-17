@@ -14,8 +14,8 @@ const History = async (props: Props) => {
     const { getUser } = getKindeServerSession()
     const user = await getUser()
 
-    if (!user || !user.id)
-      return new Response('Unauthorized', { status: 401 });
+    /*if (!user || !user.id)
+      return new Response('Unauthorized', { status: 401 });*/
 
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-[400px]">
