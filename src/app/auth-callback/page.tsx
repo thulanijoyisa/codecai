@@ -7,14 +7,14 @@ import { useEffect } from 'react'
 import { db } from "@/db";
 
 const Page = async () => {
-  /*const router = useRouter()
+  const router = useRouter()
 
   const searchParams = useSearchParams()
   const origin = searchParams.get('origin')
 
-  const { data, error } = trpc.authCallback.useQuery(undefined);
+ // const { data, error } = trpc.authCallback.useQuery(undefined);
 
-  useEffect(() => { 
+ /* useEffect(() => { 
     if (data?.success) {
       router.push(origin ? `/${origin}` : "/dashboard");
     } else if (error?.data?.code === "UNAUTHORIZED") {
@@ -26,15 +26,15 @@ const Page = async () => {
   const {getUser} = getKindeServerSession()
   const user = await getUser()
   
-  if(!user || !user.id) redirect('/')
+  if(!user || !user.id) router.push(origin ? `/${origin}` : "/dashboard");
 
   const dbUser = await db.user.findFirst({
       where: {
-        id: user.id
+        id: user!.id
       }
     })
   
-    if(!dbUser) redirect('/')
+    if(!dbUser) router.push("/sign-in");
 
   return (
     <div className='w-full mt-24 flex justify-center'>

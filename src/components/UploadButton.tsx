@@ -12,16 +12,22 @@ import { useToast } from "./ui/use-toast"
 import { useRouter } from "next/navigation"
 import { trpc } from "@/app/_trpc/client"
  
-const UploadDropzone = () => {
-  const router = useRouter() 
+const UploadDropzone = ({
+  isSubscribed,
+}: {
+  isSubscribed: boolean
+}) => {
+  const router = useRouter()
 
-  const [isUploading, setIsUploading] = useState<boolean>(false)
-
-  const [uploadProgress, setUploadProgress] = useState<number>(0)
-
+  const [isUploading, setIsUploading] =
+    useState<boolean>(false)
+  const [uploadProgress, setUploadProgress] =
+    useState<number>(0)
   const { toast } = useToast()
 
-  const {startUpload} = useUploadThing('pdfUploader')
+  const { startUpload } = useUploadThing(
+    isSubscribed ? 'proPlanUploader' : 'freePlanUploader'
+  )
 
   const { mutate: startPolling } = trpc.getFile.useMutation(
     {
@@ -44,53 +50,57 @@ const UploadDropzone = () => {
         }
         return prevProgress + 5
       })
-    }, 500) 
+    }, 500)
 
     return interval
   }
 
-  return ( <Dropzone multiple ={false} onDrop={async (acceptedFile) => { 
-    setIsUploading(true) 
-    const progressInterval = startSimulatedProgress()
+  return (
+    <Dropzone
+      multiple={false}
+      onDrop={async (acceptedFile) => {
+        setIsUploading(true)
 
-    // handle file uploading
-    const res = await startUpload(acceptedFile)
+        const progressInterval = startSimulatedProgress()
 
-    if (!res) {
-      return toast({
-        title: 'Something went wrong',
-        description: 'Please try again later',
-        variant: 'destructive',
-      })
-    }
+        // handle file uploading
+        const res = await startUpload(acceptedFile)
 
-    const [fileResponse] = res
+        if (!res) {
+          return toast({
+            title: 'Something went wrong',
+            description: 'Please try again later',
+            variant: 'destructive',
+          })
+        }
 
-    const key = fileResponse?.key
+        const [fileResponse] = res
 
-    if (!key) {
-      return toast({
-        title: 'Something went wrong',
-        description: 'Please try again later',
-        variant: 'destructive',
-      })
-    }
+        const key = fileResponse?.key
 
-    await new Promise((resolve) => setTimeout(resolve,1500))
-    
-    clearInterval(progressInterval)
-    setUploadProgress(100)
+        if (!key) {
+          return toast({
+            title: 'Something went wrong',
+            description: 'Please try again later',
+            variant: 'destructive',
+          })
+        }
 
-    startPolling({ key })
-     }}>
-      {({getRootProps, getInputProps, acceptedFiles }) =>(
-        <div {...getRootProps()} className='border h-64 m-4 border-dashed border-gray-300 rounded-lg'>
+        clearInterval(progressInterval)
+        setUploadProgress(100)
+
+        startPolling({ key })
+      }}>
+      {({ getRootProps, getInputProps, acceptedFiles }) => (
+        <div
+          {...getRootProps()}
+          className='border h-64 m-4 border-dashed border-gray-300 rounded-lg'>
           <div className='flex items-center justify-center h-full w-full'>
-          <label
+            <label
               htmlFor='dropzone-file'
               className='flex flex-col items-center justify-center w-full h-full rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100'>
               <div className='flex flex-col items-center justify-center pt-5 pb-6'>
-              <Cloud className='h-6 w-6 text-zinc-500 mb-2' />
+                <Cloud className='h-6 w-6 text-zinc-500 mb-2' />
                 <p className='mb-2 text-sm text-zinc-700'>
                   <span className='font-semibold'>
                     Click to upload
@@ -98,7 +108,7 @@ const UploadDropzone = () => {
                   or drag and drop
                 </p>
                 <p className='text-xs text-zinc-500'>
-                  PDF (up to 4MB)
+                  PDF (up to {isSubscribed ? "16" : "4"}MB)
                 </p>
               </div>
 
@@ -113,14 +123,14 @@ const UploadDropzone = () => {
                 </div>
               ) : null}
 
-            {isUploading ? (
+              {isUploading ? (
                 <div className='w-full mt-4 max-w-xs mx-auto'>
                   <Progress
-                  indicatorColor={
-                    uploadProgress === 100
-                      ? 'bg-green-500'
-                      : ''
-                     }
+                    indicatorColor={
+                      uploadProgress === 100
+                        ? 'bg-green-500'
+                        : ''
+                    }
                     value={uploadProgress}
                     className='h-1 w-full bg-zinc-200'
                   />
@@ -133,42 +143,46 @@ const UploadDropzone = () => {
                 </div>
               ) : null}
 
-                <input
+              <input
                 {...getInputProps()}
                 type='file'
                 id='dropzone-file'
                 className='hidden'
-                />
-
-           </label>
+              />
+            </label>
           </div>
         </div>
       )}
-  </Dropzone>
-)}
+    </Dropzone>
+  )
+}
 
-const UploadButton = () => {
-    const [isOpen, setIsOpen] = useState<boolean>(false)
+const UploadButton = ({
+  isSubscribed,
+}: {
+  isSubscribed: boolean
+}) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
-    return (
-        <Dialog 
-        open={isOpen}
-        onOpenChange={(v) => {
-          if (!v) {
-            setIsOpen(v)
-          }
-        }}>
+  return (
+    <Dialog
+      open={isOpen}
+      onOpenChange={(v) => {
+        if (!v) {
+          setIsOpen(v)
+        }
+      }}>
       <DialogTrigger
         onClick={() => setIsOpen(true)}
         asChild>
         <Button>Upload PDF</Button>
       </DialogTrigger>
 
-      
       <DialogContent>
-      <UploadDropzone/>
+        <UploadDropzone isSubscribed={isSubscribed} />
       </DialogContent>
     </Dialog>
-    ) 
+  )
 }
-  export default UploadButton
+
+export default UploadButton
