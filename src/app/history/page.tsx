@@ -11,8 +11,8 @@ import HistoryComponent from "@/quize/HistoryComponent";
 type Props = {};
 
 const History = async (props: Props) => {
-    const { getUser } = getKindeServerSession()
-    const user = await getUser()
+    const { getUser } = getKindeServerSession()!
+    const user = await getUser()!
 
     /*if (!user || !user.id)
       return new Response('Unauthorized', { status: 401 });*/
