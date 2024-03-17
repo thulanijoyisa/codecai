@@ -26,7 +26,7 @@ const Page = async () => {
   const {getUser} = getKindeServerSession()
   const user = await getUser()
   
-  if(!user || !user.id) redirect('/auth-callback?dashboard')
+  if(!user || !user.id) redirect('/dashboard')
 
   const dbUser = await db.user.findFirst({
       where: {
@@ -34,7 +34,7 @@ const Page = async () => {
       }
     })
   
-    if(!dbUser) redirect('/auth-callback?dashboard')
+    if(!dbUser) redirect('/dashboard')
 
   return (
     <div className='w-full mt-24 flex justify-center'>
