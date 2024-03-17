@@ -1,18 +1,18 @@
-"use client"
-
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { redirect } from "next/navigation";
 import { useRouter, useSearchParams } from 'next/navigation'
 import { trpc } from '../_trpc/client'
 import { Loader2 } from 'lucide-react'
 import { useEffect } from 'react'
+import { db } from "@/db";
 
-const Page = () => {
-  const router = useRouter()
+const Page = async () => {
+  /*const router = useRouter()
 
   const searchParams = useSearchParams()
   const origin = searchParams.get('origin')
 
-// Ensure useQuery() is only executed on the client-side
-const { data, error } = typeof window !== 'undefined' ? trpc.authCallback.useQuery() : { data: null, error: null };
+  const { data, error } = trpc.authCallback.useQuery(undefined);
 
   useEffect(() => { 
     if (data?.success) {
@@ -21,7 +21,20 @@ const { data, error } = typeof window !== 'undefined' ? trpc.authCallback.useQue
       console.log('error: ', error);
       router.push("/sign-in");
     }
-  }, [data, error, router, origin]); 
+  }, [data, error, router, origin]); */
+
+  const {getUser} = getKindeServerSession()
+  const user = await getUser()
+  
+  if(!user || !user.id) redirect('/auth-callback?origin-dashboard')
+
+  const dbUser = await db.user.findFirst({
+      where: {
+        id: user.id
+      }
+    })
+  
+    if(!dbUser) redirect('/auth-callback?origin=dashboard')
 
   return (
     <div className='w-full mt-24 flex justify-center'>
