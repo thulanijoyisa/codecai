@@ -13,9 +13,9 @@ type Props = {};
 const History = async (props: Props) => {
     const { getUser } = getKindeServerSession()
     const user = await getUser()
-    const userId = user?.id
+    //const userId = !user.id
 
-    if (!userId)
+    if (user?.id)
       return new Response('Unauthorized', { status: 401 })
 
   return (
@@ -31,10 +31,10 @@ const History = async (props: Props) => {
           </div>
         </CardHeader>
         <CardContent className="max-h-[60vh] overflow-scroll">
-          <HistoryComponent limit={100} userId={user.id} />
+          <HistoryComponent limit={100} userId={user!.id} />
         </CardContent>
       </Card>
-    </div>
+    </div> 
   );
 };
 
