@@ -7,15 +7,23 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { LucideLayoutDashboard } from "lucide-react";
 import HistoryComponent from "@/quize/HistoryComponent";
+import { db } from "@/db";
 
 type Props = {};
 
 const History = async (props: Props) => {
-    const { getUser } = getKindeServerSession()!
-    const user = await getUser()!
+  const {getUser} = getKindeServerSession()
+  const user = await getUser()
+  
+  if(!user || !user.id) redirect('/auth-callback?origin-dashboard')
 
-    /*if (!user || !user.id)
-      return new Response('Unauthorized', { status: 401 });*/
+  const dbUser = await db.user.findFirst({
+      where: {
+        id: user.id
+      }
+    })
+  
+    if(!dbUser) redirect('/auth-callback?origin=dashboard')
 
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-[400px]">
@@ -30,7 +38,7 @@ const History = async (props: Props) => {
           </div>
         </CardHeader>
         <CardContent className="max-h-[60vh] overflow-scroll">
-          <HistoryComponent limit={100} userId={user!.id} />
+          <HistoryComponent limit={100} userId={user.id} />
         </CardContent>
       </Card>
     </div> 
