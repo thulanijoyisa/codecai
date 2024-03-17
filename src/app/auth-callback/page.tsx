@@ -26,15 +26,15 @@ const Page = async () => {
   const {getUser} = getKindeServerSession()
   const user = await getUser()
   
-  if(!user || !user.id) router.push(origin ? `/${origin}` : "/dashboard");
+  if(!user || !user.id) redirect('/auth-callback?dashboard')
 
   const dbUser = await db.user.findFirst({
       where: {
-        id: user!.id
+        id: user.id
       }
     })
   
-    if(!dbUser) router.push("/sign-in");
+    if(!dbUser) redirect('/auth-callback?dashboard')
 
   return (
     <div className='w-full mt-24 flex justify-center'>
