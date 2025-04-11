@@ -20,7 +20,7 @@ pdfUploader: f({ pdf: { maxFileSize: "4MB" } })
         const user = await getUser()
       
         if (!user || !user.id) throw new Error('Unauthorized')
-      return { userId: user.id };
+      return { userId: user!.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
         const createdFile = await db.file.create({
@@ -28,13 +28,13 @@ pdfUploader: f({ pdf: { maxFileSize: "4MB" } })
               key: file.key,
               name: file.name,
               userId: metadata.userId,
-              url: getS3Url(file.key),
+              url: `https://utfs.io/f/${file.key}`,
               uploadStatus: 'PROCESSING',
             },
           })
 
           try {
-            const response = await fetch(getS3Url(file.key),)
+            const response = await fetch(`https://utfs.io/f/${file.key}`,)
 
             const blob = await response.blob()
 
@@ -84,5 +84,3 @@ pdfUploader: f({ pdf: { maxFileSize: "4MB" } })
 } satisfies FileRouter
 
 export type OurFileRouter = typeof ourFileRouter
-
-

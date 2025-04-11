@@ -17,22 +17,12 @@ type Props = {};
 const RecentActivityCard = async (props: Props) => {
     const {getUser} = getKindeServerSession()
     const user = await getUser()
-    
-    if(!user || !user.id) redirect('/')
-
-    const dbUser = await db.user.findFirst({
-        where: {
-          id: user.id
-        }
-      })
-    
-      if(!dbUser) redirect('/')
 
       const quiz_count = await db.quiz.count({
         where: {
-          userId: user.id,
+          userId: user?.id,
         },
-      });
+      })
 
       return (
         <Card className="col-span-4 lg:col-span-3">
@@ -45,7 +35,7 @@ const RecentActivityCard = async (props: Props) => {
             </CardDescription>
           </CardHeader>
           <CardContent className="max-h-[580px] overflow-scroll">
-            <HistoryComponent limit={10} userId={user.id} />
+            <HistoryComponent limit={10} userId={user!.id} />
           </CardContent>
         </Card>
       );

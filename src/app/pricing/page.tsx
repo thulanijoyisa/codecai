@@ -15,8 +15,6 @@ type Props = {}
 const page = async (props: Props) =>  {
   const {getUser} = getKindeServerSession()
   const user = await getUser()
-  
-  if(!user || !user.id) redirect('/auth-callback?origin-dashboard')
 
   const pricingItems = [
     {
