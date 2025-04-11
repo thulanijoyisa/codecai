@@ -54,7 +54,7 @@ createStripeSession: privateProcedure.mutation(
   async ({ ctx }) => {
     const { userId } = ctx
 
-    const billingUrl = absoluteUrl('/dashboard/billing')
+    const billingUrl = ('http://localhost:3000/dashboard/billing')
 
     if (!userId)
       throw new TRPCError({ code: 'UNAUTHORIZED' })

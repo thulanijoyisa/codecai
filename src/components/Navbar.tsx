@@ -3,6 +3,7 @@ import MaxWidthWrapper from './MaxWidthWrapper'
 import { buttonVariants } from './ui/button'
 import {
   LoginLink,
+  LogoutLink,
   RegisterLink,
   getKindeServerSession,
 } from '@kinde-oss/kinde-auth-nextjs/server'
@@ -59,7 +60,7 @@ const Navbar = async () => {
                 className={buttonVariants({
                   variant: 'ghost',
                   size: 'sm',
-                })}>
+                })}> 
                 PDF Chats Dashboard
               </Link>
               <Link
@@ -76,18 +77,10 @@ const Navbar = async () => {
                   variant: 'ghost',
                   size: 'sm',
                 })}>
-                Quizes Dashboard
+                Quizzes Dashboard
               </Link>
  
-              <UserAccountNav
-                   name={
-                     !user.given_name || !user.family_name
-                       ? 'Your Account'
-                       : `${user.given_name} ${user.family_name}`
-                   }
-                   email={user.email ?? ''}
-                   imageUrl={user.picture ?? ''}
-                 />
+              <LogoutLink>Log out</LogoutLink>
  
             </>
              )}

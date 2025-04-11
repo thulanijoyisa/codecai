@@ -15,7 +15,7 @@ import RecentActivityCard from "@/quize/quizdash/RecentActivityCard";
 type Props = {};
 
 export const metadata = {
-  title: "Quiz Dashboard | My Quizes",
+  title: "Quiz Dashboard | My Quizzes",
   //description: "Quiz yourself on anything!",
 };
 
@@ -23,21 +23,21 @@ const QuizDashPage = async (props: Props) => {
   const {getUser} = getKindeServerSession()
     const user = await getUser()
     
-    if(!user || !user.id) redirect('/')
-
+    //if(!user || !user.id) redirect('/')
+/*
     const dbUser = await db.user.findFirst({
         where: {
           id: user.id
         }
       })
     
-      if(!dbUser) redirect('/')
+      if(!dbUser) redirect('/')*/
 
   return (
     <main className='mx-auto max-w-7xl md:p-10' >
      <div className='mt-8 flex flex-col items-start justify-between gap-4 border-b border-gray-200 pb-5 sm:flex-row sm:items-center sm:gap-0'>
      <h1 className='mb-3 font-bold text-5xl text-gray-900'>
-          My Quizes
+          My Quizzes
         </h1>
         <Link className={buttonVariants({
           size: 'lg',

@@ -77,10 +77,33 @@ const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
                     }
                     className='flex items-center w-full font-semibold'
                     href='/dashboard'>
-                    Dashboard
+                    PDF Chats Dashboard
                   </Link>
                 </li>
                 <li className='my-3 h-px w-full bg-gray-300' />
+                <li>
+                  <Link
+                    onClick={() =>
+                      closeOnCurrent('/gallery')
+                    }
+                    className='flex items-center w-full font-semibold'
+                    href='/gallery'>
+                    Courses Dashboard
+                  </Link>
+                </li>
+                <li className='my-3 h-px w-full bg-gray-300' />
+                <li>
+                  <Link
+                    onClick={() =>
+                      closeOnCurrent('/quiz')
+                    }
+                    className='flex items-center w-full font-semibold'
+                    href='/quiz'>
+                    Quizes Dashboard
+                  </Link>
+                </li>
+                <li className='my-3 h-px w-full bg-gray-300' />
+                
                 <li>
                   <Link
                     className='flex items-center w-full font-semibold'

@@ -12,22 +12,16 @@ import { useToast } from "./ui/use-toast"
 import { useRouter } from "next/navigation"
 import { trpc } from "@/app/_trpc/client"
  
-const UploadDropzone = ({
-  isSubscribed,
-}: {
-  isSubscribed: boolean
-}) => {
-  const router = useRouter()
+const UploadDropzone = () => {
+  const router = useRouter() 
 
-  const [isUploading, setIsUploading] =
-    useState<boolean>(false)
-  const [uploadProgress, setUploadProgress] =
-    useState<number>(0)
+  const [isUploading, setIsUploading] = useState<boolean>(false)
+
+  const [uploadProgress, setUploadProgress] = useState<number>(0)
+
   const { toast } = useToast()
 
-  const { startUpload } = useUploadThing(
-    isSubscribed ? 'proPlanUploader' : 'freePlanUploader'
-  )
+  const {startUpload} = useUploadThing('pdfUploader')
 
   const { mutate: startPolling } = trpc.getFile.useMutation(
     {
@@ -50,57 +44,53 @@ const UploadDropzone = ({
         }
         return prevProgress + 5
       })
-    }, 500)
+    }, 500) 
 
     return interval
   }
 
-  return (
-    <Dropzone
-      multiple={false}
-      onDrop={async (acceptedFile) => {
-        setIsUploading(true)
+  return ( <Dropzone multiple ={false} onDrop={async (acceptedFile) => { 
+    setIsUploading(true) 
+    const progressInterval = startSimulatedProgress()
 
-        const progressInterval = startSimulatedProgress()
+    // handle file uploading
+    const res = await startUpload(acceptedFile)
 
-        // handle file uploading
-        const res = await startUpload(acceptedFile)
+    if (!res) {
+      return toast({
+        title: 'Something went wrong',
+        description: 'Please try again later',
+        variant: 'destructive',
+      })
+    }
 
-        if (!res) {
-          return toast({
-            title: 'Something went wrong',
-            description: 'Please try again later',
-            variant: 'destructive',
-          })
-        }
+    const [fileResponse] = res
 
-        const [fileResponse] = res
+    const key = fileResponse?.key
 
-        const key = fileResponse?.key
+    if (!key) {
+      return toast({
+        title: 'Something went wrong',
+        description: 'Please try again later',
+        variant: 'destructive',
+      })
+    }
 
-        if (!key) {
-          return toast({
-            title: 'Something went wrong',
-            description: 'Please try again later',
-            variant: 'destructive',
-          })
-        }
+    await new Promise((resolve) => setTimeout(resolve,1500))
+    
+    clearInterval(progressInterval)
+    setUploadProgress(100)
 
-        clearInterval(progressInterval)
-        setUploadProgress(100)
-
-        startPolling({ key })
-      }}>
-      {({ getRootProps, getInputProps, acceptedFiles }) => (
-        <div
-          {...getRootProps()}
-          className='border h-64 m-4 border-dashed border-gray-300 rounded-lg'>
+    startPolling({ key })
+     }}>
+      {({getRootProps, getInputProps, acceptedFiles }) =>(
+        <div {...getRootProps()} className='border h-64 m-4 border-dashed border-gray-300 rounded-lg'>
           <div className='flex items-center justify-center h-full w-full'>
-            <label
+          <label
               htmlFor='dropzone-file'
               className='flex flex-col items-center justify-center w-full h-full rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100'>
               <div className='flex flex-col items-center justify-center pt-5 pb-6'>
-                <Cloud className='h-6 w-6 text-zinc-500 mb-2' />
+              <Cloud className='h-6 w-6 text-zinc-500 mb-2' />
                 <p className='mb-2 text-sm text-zinc-700'>
                   <span className='font-semibold'>
                     Click to upload
@@ -108,7 +98,7 @@ const UploadDropzone = ({
                   or drag and drop
                 </p>
                 <p className='text-xs text-zinc-500'>
-                  PDF (up to {isSubscribed ? "16" : "4"}MB)
+                  PDF (up to 4MB)
                 </p>
               </div>
 
@@ -123,14 +113,14 @@ const UploadDropzone = ({
                 </div>
               ) : null}
 
-              {isUploading ? (
+            {isUploading ? (
                 <div className='w-full mt-4 max-w-xs mx-auto'>
                   <Progress
-                    indicatorColor={
-                      uploadProgress === 100
-                        ? 'bg-green-500'
-                        : ''
-                    }
+                  indicatorColor={
+                    uploadProgress === 100
+                      ? 'bg-green-500'
+                      : ''
+                     }
                     value={uploadProgress}
                     className='h-1 w-full bg-zinc-200'
                   />
@@ -143,46 +133,42 @@ const UploadDropzone = ({
                 </div>
               ) : null}
 
-              <input
+                <input
                 {...getInputProps()}
                 type='file'
                 id='dropzone-file'
                 className='hidden'
-              />
-            </label>
+                />
+
+           </label>
           </div>
         </div>
       )}
-    </Dropzone>
-  )
-}
+  </Dropzone>
+)}
 
-const UploadButton = ({
-  isSubscribed,
-}: {
-  isSubscribed: boolean
-}) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false)
+const UploadButton = () => {
+    const [isOpen, setIsOpen] = useState<boolean>(false)
 
-  return (
-    <Dialog
-      open={isOpen}
-      onOpenChange={(v) => {
-        if (!v) {
-          setIsOpen(v)
-        }
-      }}>
+    return (
+        <Dialog 
+        open={isOpen}
+        onOpenChange={(v) => {
+          if (!v) {
+            setIsOpen(v)
+          }
+        }}>
       <DialogTrigger
         onClick={() => setIsOpen(true)}
         asChild>
         <Button>Upload PDF</Button>
       </DialogTrigger>
 
+      
       <DialogContent>
-        <UploadDropzone isSubscribed={isSubscribed} />
+      <UploadDropzone/>
       </DialogContent>
     </Dialog>
-  )
+    ) 
 }
-
-export default UploadButton
+  export default UploadButton
